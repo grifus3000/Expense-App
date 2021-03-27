@@ -15,6 +15,7 @@
 		2249A7F5260F5D240098ED6A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2249A7F3260F5D240098ED6A /* LaunchScreen.storyboard */; };
 		2249A800260F5D240098ED6A /* ExpenseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2249A7FF260F5D240098ED6A /* ExpenseTests.swift */; };
 		2249A80B260F5D240098ED6A /* ExpenseUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2249A80A260F5D240098ED6A /* ExpenseUITests.swift */; };
+		22ADE535260F5E930074D2BA /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22ADE534260F5E930074D2BA /* Model.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +50,7 @@
 		2249A806260F5D240098ED6A /* ExpenseUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ExpenseUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2249A80A260F5D240098ED6A /* ExpenseUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseUITests.swift; sourceTree = "<group>"; };
 		2249A80C260F5D240098ED6A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		22ADE534260F5E930074D2BA /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +103,7 @@
 			children = (
 				2249A7E8260F5D1F0098ED6A /* AppDelegate.swift */,
 				2249A7EA260F5D1F0098ED6A /* SceneDelegate.swift */,
+				22ADE534260F5E930074D2BA /* Model.swift */,
 				2249A7EC260F5D1F0098ED6A /* ContentView.swift */,
 				2249A7EE260F5D240098ED6A /* Assets.xcassets */,
 				2249A7F3260F5D240098ED6A /* LaunchScreen.storyboard */,
@@ -269,6 +272,7 @@
 				2249A7E9260F5D1F0098ED6A /* AppDelegate.swift in Sources */,
 				2249A7EB260F5D1F0098ED6A /* SceneDelegate.swift in Sources */,
 				2249A7ED260F5D1F0098ED6A /* ContentView.swift in Sources */,
+				22ADE535260F5E930074D2BA /* Model.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

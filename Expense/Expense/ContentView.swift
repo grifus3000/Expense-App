@@ -7,61 +7,15 @@
 
 import SwiftUI
 
-struct SuperStract: Identifiable {
-    var id: Int
-    
-    var titleOfStruct: String
-    var priceOfStruct: String
-}
+
 
 struct ContentView: View {
     @State var onNumberAllert = false
     @State var oneTitle: String = ""
     @State var onePrice: String = ""
-    @State var allData: [SuperStract] = [] //UserDefaults.standard.array(forKey: "struct") as? [SuperStract] ?? []
-    //@State var arr: [String] = []//= UserDefaults.standard.array(forKey: "price") as? [String] ?? []
-
-    func sum() -> Int {
-        var sum = 0
-        for i in 0..<allData.count {
-            sum = sum + Int(allData[i].priceOfStruct)!
-        }
-        return sum
-    }
+    @ObservedObject var worker = mainWork()
     
-    func addToStruct(title: String, price: String) {
-        allData.append(SuperStract(id: allData.count, titleOfStruct: title, priceOfStruct: price))
-        //arr.append(price)
-    }
     
-    //    func saveData(values: [SuperStract], id: Int) {
-    //        let data = UserDefaults.standard
-    //        data.set(values, forKey: String(id))
-    //        print(values)
-    //    }
-    //
-    //    func saveTest(val: [Int], key: String) {
-    //        let data = UserDefaults.standard
-    //        data.set(val, forKey: key)
-    //        for i in 0..<allData.count {
-    //            print(data.string(forKey: key))
-    //        }
-    //    }
-    
-    func deleteItem(index: IndexSet) {
-        allData.remove(atOffsets: index)
-        for i in 0..<allData.count {
-            allData[i].id = i
-        }
-    }
-    
-    func onlyNumbers(str: String) -> Bool {
-        let newStr = str.filter { $0.isNumber }
-        if str == newStr && str != "" {
-            return true
-        }
-        return false
-    }
     
     var body: some View {
         HStack {
@@ -72,8 +26,8 @@ struct ContentView: View {
                 //                    Text("Read struct")
                 //                })
                 Button(action: {
-                    if onlyNumbers(str: onePrice) {
-                        addToStruct(title: oneTitle, price: onePrice)
+                    if worker.onlyNumbers(str: onePrice) {
+                        worker.addToStruct(title: oneTitle, price: onePrice)
                         //UserDefaults.standard.set(allData, forKey: "struct")
                         //saveData(values: allData, id: allData.count)
                         //saveTest(val: Int(onePrice)!, key: oneTitle)
@@ -97,7 +51,7 @@ struct ContentView: View {
                             .keyboardType(.phonePad)
                     }
                     .frame(height: 30, alignment: .center)
-                    ForEach(allData) {k in
+                    ForEach(worker.allData) {k in
                         HStack {
                             Text(k.titleOfStruct)
                                 .frame(width: 150 ,height: 30, alignment: .center)
@@ -106,14 +60,14 @@ struct ContentView: View {
                         }
                     }
                     .onDelete(perform: { indexSet in
-                        deleteItem(index: indexSet)
+                        worker.deleteItem(index: indexSet)
                     })
                 }
                 Form {
                     HStack {
                         Text("General price")
                             .frame(width: 150 ,height: 30, alignment: .center)
-                        Text("\(sum())")
+                        Text("\(worker.sum())")
                             .frame(width: 150 ,height: 30, alignment: .center)
                     }
                 }
