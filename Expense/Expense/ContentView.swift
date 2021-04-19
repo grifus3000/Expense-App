@@ -7,31 +7,27 @@
 
 import SwiftUI
 
-
-
 struct ContentView: View {
     @State var onNumberAllert = false
     @State var oneTitle: String = ""
     @State var onePrice: String = ""
     @ObservedObject var worker = mainWork()
-    
-    
-    
+    @State var x = 0
     var body: some View {
         HStack {
+            
             VStack{
+                
                 //                Button(action: {
-                //                    print(allData)
+                //                    print(worker.allDataInStruct)
                 //                }, label: {
                 //                    Text("Read struct")
                 //                })
+                // кнопка добавления данных в массив и сохранения
                 Button(action: {
                     if worker.onlyNumbers(str: onePrice) {
                         worker.addToStruct(title: oneTitle, price: onePrice)
-                        //UserDefaults.standard.set(allData, forKey: "struct")
-                        //saveData(values: allData, id: allData.count)
-                        //saveTest(val: Int(onePrice)!, key: oneTitle)
-                        //print(allData)
+                        worker.saveData()
                         oneTitle = ""
                         onePrice = ""
                     } else {
@@ -44,41 +40,69 @@ struct ContentView: View {
                 .alert(isPresented: $onNumberAllert, content: {
                     Alert(title: Text("You should only enter numbers"))
                 })
+                
+                // создание формы для предстваления данных
                 Form {
+                    // ввод данных
                     HStack {
                         TextField("Enter title", text: $oneTitle)
                         TextField("Enter price", text: $onePrice)
                             .keyboardType(.phonePad)
                     }
                     .frame(height: 30, alignment: .center)
-                    ForEach(worker.allData) {k in
+                    
+                    // вывод данных
+                    
+                    ForEach(worker.allDataInStruct, id: \.self) {k in
+                        
                         HStack {
                             Text(k.titleOfStruct)
+                                .onTapGesture {
+                                    worker.alertFunc(index: k.id)
+                                    
+                                    print(k.id)
+                                    //k.titleOfStruct = worker.$changedTitle
+                                    
+                                    //print(worker.changedTitle)
+                                    
+                                }
                                 .frame(width: 150 ,height: 30, alignment: .center)
                             Text(k.priceOfStruct)
                                 .frame(width: 150 ,height: 30, alignment: .center)
                         }
+                        
                     }
+                    
+//                    .onTapGesture(perform: { indexSet in
+//                        print(indexSet)
+//                    })
                     .onDelete(perform: { indexSet in
+                        print(indexSet)
                         worker.deleteItem(index: indexSet)
-                    })
+                        })
+                    
                 }
-                Form {
-                    HStack {
-                        Text("General price")
-                            .frame(width: 150 ,height: 30, alignment: .center)
-                        Text("\(worker.sum())")
-                            .frame(width: 150 ,height: 30, alignment: .center)
+                
+                
+                    // подсчет общей суммы
+                    Form {
+                        HStack {
+                            Text("General price")
+                                .frame(width: 150 ,height: 30, alignment: .center)
+                            Text("\(worker.sum())")
+                                .frame(width: 150 ,height: 30, alignment: .center)
+                        }
                     }
+                    .frame(height: 100, alignment: .top)
                 }
-                .frame(height: 100, alignment: .top)
+            } .onAppear() {
+                worker.loadData()
             }
         }
     }
-}
 
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
+    struct ContentView_Previews: PreviewProvider {
+        static var previews: some View {
+            ContentView()
+        }
     }
-}

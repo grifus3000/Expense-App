@@ -4,55 +4,38 @@
 //
 //  Created by Grifus on 27.03.2021.
 //
-
+import SwiftUI
 import Foundation
 
-struct SuperStract: Identifiable {
-    var id: Int
-    
+struct SuperStract: Codable, Hashable {
     var titleOfStruct: String
     var priceOfStruct: String
+    var id: Int
 }
 
 class mainWork: ObservableObject {
-    
-    @Published var allData: [SuperStract] = [] //UserDefaults.standard.array(forKey: "struct") as? [SuperStract] ?? []
-    //@State var arr: [String] = []//= UserDefaults.standard.array(forKey: "price") as? [String] ?? []
-    
-    
-    //    func saveData(values: [SuperStract], id: Int) {
-    //        let data = UserDefaults.standard
-    //        data.set(values, forKey: String(id))
-    //        print(values)
-    //    }
-    //
-    //    func saveTest(val: [Int], key: String) {
-    //        let data = UserDefaults.standard
-    //        data.set(val, forKey: key)
-    //        for i in 0..<allData.count {
-    //            print(data.string(forKey: key))
-    //        }
-    //    }
-    
+    @Published var allDataInStruct: [SuperStract] = []
+    var fileName = "fileOfStructData.json"
+    @Published var changedTitle = ""
     
     func sum() -> Int {
         var sum = 0
-        for i in 0..<allData.count {
-            sum = sum + Int(allData[i].priceOfStruct)!
+        for i in allDataInStruct {
+            sum = sum + Int(i.priceOfStruct)!
         }
         return sum
     }
     
     func addToStruct(title: String, price: String) {
-        allData.append(SuperStract(id: allData.count, titleOfStruct: title, priceOfStruct: price))
-        //arr.append(price)
+        allDataInStruct.append(SuperStract(titleOfStruct: title, priceOfStruct: price, id: allDataInStruct.count))
     }
     
     func deleteItem(index: IndexSet) {
-        allData.remove(atOffsets: index)
-        for i in 0..<allData.count {
-            allData[i].id = i
+        allDataInStruct.remove(atOffsets: index)
+        for i in 0..<allDataInStruct.count {
+            allDataInStruct[i].id = i
         }
+        saveData()
     }
     
     func onlyNumbers(str: String) -> Bool {
@@ -62,4 +45,55 @@ class mainWork: ObservableObject {
         }
         return false
     }
+    
+    func saveData() {
+        let dirUrl = FileManager.default.temporaryDirectory
+        let fileUrl = dirUrl.appendingPathComponent(fileName)
+        let json = try? JSONEncoder().encode(allDataInStruct)
+        do {
+            try json!.write(to: fileUrl)
+        } catch {
+            print("can't write data in file")
+        }
+    }
+    
+    func loadData() {
+        let dirUrl = FileManager.default.temporaryDirectory
+        let fileUrl = dirUrl.appendingPathComponent(fileName)
+        if !FileManager.default.fileExists(atPath: fileUrl.path) {
+            let some = ""
+            let json = try? JSONEncoder().encode(some)
+            do {
+                try json!.write(to: fileUrl)
+            } catch {
+                print("can't write data in file")
+            }
+        }
+        let data = try? Data(contentsOf: fileUrl, options: [])
+        guard let array = try? JSONDecoder().decode([SuperStract].self, from: data!) else {return}
+        allDataInStruct = array
+    }
+    
+    func alertFunc(index: Int) {
+        let alert = UIAlertController(title: "Change values", message: "", preferredStyle: .alert)
+        
+        alert.addTextField { textField in
+            textField.text = self.allDataInStruct[index].titleOfStruct
+        }
+        
+        let change = UIAlertAction(title: "Change", style: .default) { _ in
+            self.allDataInStruct[index].titleOfStruct = alert.textFields?[0].text ?? ""
+            self.saveData()
+        }
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { _ in
+            
+        }
+        
+        alert.addAction(change)
+        alert.addAction(cancel)
+        
+        UIApplication.shared.windows.first?.rootViewController?.present(alert, animated: true)
+        
+    }
 }
+
