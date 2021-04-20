@@ -59,12 +59,6 @@ struct ContentView: View {
                             Text(k.titleOfStruct)
                                 .onTapGesture {
                                     worker.alertFunc(index: k.id)
-                                    
-                                    print(k.id)
-                                    //k.titleOfStruct = worker.$changedTitle
-                                    
-                                    //print(worker.changedTitle)
-                                    
                                 }
                                 .frame(width: 150 ,height: 30, alignment: .center)
                             Text(k.priceOfStruct)
@@ -73,36 +67,32 @@ struct ContentView: View {
                         
                     }
                     
-//                    .onTapGesture(perform: { indexSet in
-//                        print(indexSet)
-//                    })
                     .onDelete(perform: { indexSet in
                         print(indexSet)
                         worker.deleteItem(index: indexSet)
-                        })
+                    })
                     
                 }
                 
-                
-                    // подсчет общей суммы
-                    Form {
-                        HStack {
-                            Text("General price")
-                                .frame(width: 150 ,height: 30, alignment: .center)
-                            Text("\(worker.sum())")
-                                .frame(width: 150 ,height: 30, alignment: .center)
-                        }
+                // подсчет общей суммы
+                Form {
+                    HStack {
+                        Text("General price")
+                            .frame(width: 150 ,height: 30, alignment: .center)
+                        Text("\(worker.sum())")
+                            .frame(width: 150 ,height: 30, alignment: .center)
                     }
-                    .frame(height: 100, alignment: .top)
                 }
-            } .onAppear() {
-                worker.loadData()
+                .frame(height: 100, alignment: .top)
             }
+        } .onAppear() {
+            worker.loadData()
         }
     }
+}
 
-    struct ContentView_Previews: PreviewProvider {
-        static var previews: some View {
-            ContentView()
-        }
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
     }
+}

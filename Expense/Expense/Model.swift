@@ -80,9 +80,14 @@ class mainWork: ObservableObject {
         alert.addTextField { textField in
             textField.text = self.allDataInStruct[index].titleOfStruct
         }
+        alert.addTextField { textField in
+            textField.text = self.allDataInStruct[index].priceOfStruct
+        }
+        
         
         let change = UIAlertAction(title: "Change", style: .default) { _ in
             self.allDataInStruct[index].titleOfStruct = alert.textFields?[0].text ?? ""
+            self.allDataInStruct[index].priceOfStruct = alert.textFields?[1].text ?? "0"
             self.saveData()
         }
         let cancel = UIAlertAction(title: "Cancel", style: .cancel) { _ in
