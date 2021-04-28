@@ -17,7 +17,7 @@ class mainWork: ObservableObject {
     @Published var allDataInStruct: [SuperStract] = []
     var fileName = "fileOfStructData.json"
     @Published var changedTitle = ""
-    
+
     func sum() -> Int {
         var sum = 0
         for i in allDataInStruct {
@@ -84,11 +84,17 @@ class mainWork: ObservableObject {
             textField.text = self.allDataInStruct[index].priceOfStruct
         }
         
+        alert.textFields?[1].keyboardType = .phonePad
         
         let change = UIAlertAction(title: "Change", style: .default) { _ in
-            self.allDataInStruct[index].titleOfStruct = alert.textFields?[0].text ?? ""
-            self.allDataInStruct[index].priceOfStruct = alert.textFields?[1].text ?? "0"
-            self.saveData()
+            if self.onlyNumbers(str: alert.textFields?[1].text ?? "") {
+                self.allDataInStruct[index].titleOfStruct = alert.textFields?[0].text ?? ""
+                self.allDataInStruct[index].priceOfStruct = alert.textFields?[1].text ?? ""
+                self.saveData()
+            } else {
+                print("You should only enter numbers")
+            }
+            
         }
         let cancel = UIAlertAction(title: "Cancel", style: .cancel) { _ in
             

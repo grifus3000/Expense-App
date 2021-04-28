@@ -13,6 +13,7 @@ struct ContentView: View {
     @State var onePrice: String = ""
     @ObservedObject var worker = mainWork()
     @State var x = 0
+    
     var body: some View {
         HStack {
             
@@ -32,6 +33,8 @@ struct ContentView: View {
                         onePrice = ""
                     } else {
                         onNumberAllert.toggle()
+//                        worker.on.toggle()
+//                        print(worker.on)
                     }
                 }, label: {
                     Text("Add item")
@@ -64,14 +67,13 @@ struct ContentView: View {
                             Text(k.priceOfStruct)
                                 .frame(width: 150 ,height: 30, alignment: .center)
                         }
-                        
                     }
                     
                     .onDelete(perform: { indexSet in
                         print(indexSet)
                         worker.deleteItem(index: indexSet)
                     })
-                    
+
                 }
                 
                 // подсчет общей суммы
